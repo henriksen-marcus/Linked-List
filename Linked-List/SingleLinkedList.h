@@ -21,18 +21,13 @@ public:
 	Node<T>* tail;
 
 private:
-	bool FirstTimeAdd;
-	int ListSize;
+	int size;
 };
 
 template<class T>
 SLL<T>::SLL()
 {
-	FirstTimeAdd = true;
-	ListSize = 0;
-
-	head = new Node<T>();
-	tail = new Node<T>();
+	size = 0;
 	head = tail;
 }
 
@@ -53,9 +48,23 @@ int SLL<T>::Add(T data)
 {
 	if (!data) return ListSize;
 
+	Node<T>* newNode = new Node<T>;
+	newNode->data = data;
+	newNode->next = nullptr;
+
+	if (!head)
+	{
+		head = newNode;
+	}
+	if (tail)
+	{
+		tail->next = newNode;
+	}
+	tail = newNode;
+
 	// Head can also store data, put it 
 	// there if the list is empty.
-	if (!head->data)
+	/*if (!head->data)
 	{
 		head->data = data;
 		return ++ListSize;
@@ -64,11 +73,9 @@ int SLL<T>::Add(T data)
 	{
 		tail->data = data;
 		return ++ListSize;
-	}
+	}*/
 
-	Node<T>* newNode = new Node<T>;
-	newNode->data = data;
-	newNode->next = nullptr;
+	
 
 	//if (FirstTimeAdd)
 	//{
@@ -79,8 +86,8 @@ int SLL<T>::Add(T data)
 	//}
 	//else 
 	//{
-		tail->next = newNode;
-		tail = newNode;
+		/*tail->next = newNode;
+		tail = newNode;*/
 	//}
 	
 	return ++ListSize;

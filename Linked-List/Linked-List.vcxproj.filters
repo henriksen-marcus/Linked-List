@@ -26,5 +26,14 @@
     <ClInclude Include="Node.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadNode.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadLinkedList.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
