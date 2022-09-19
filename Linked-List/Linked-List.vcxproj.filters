@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SingleLinkedList.h">
+    <ClInclude Include="DoubleLinkedList.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">

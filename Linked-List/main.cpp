@@ -1,10 +1,10 @@
 #include <iostream>
-#include "SingleLinkedList.h"
+#include "DoubleLinkedList.h"
 #include "Queue.h"
 
 int main()
 {
-    SLL<int> List;
+    DLL<int> List;
 
     List.Add(1);
     List.Add(2);
@@ -14,7 +14,20 @@ int main()
 
     List.Print();
 
-    Queue myQ;
+    List.Remove(2);
+
+    cout << endl << endl;
+
+    List.Print();
+
+#include "Node.h"
+    Node<int>* Hey = new Node<int>();
+    Hey->data = 1240;
+    List.Insert(Hey, 2);
+    cout << endl << endl;
+    List.Print();
+    
+  /*  Queue myQ;
 
     myQ.add(1);
     myQ.add(2);
@@ -23,5 +36,5 @@ int main()
 
     myQ.Print();
     myQ.RemoveFirst();
-    myQ.Print();
+    myQ.Print();*/
 }
