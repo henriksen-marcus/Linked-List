@@ -1,7 +1,6 @@
 #pragma once
 
-#include <iostream>
-
+// Data container for use as an element inside a quad linked list. 
 template<class T>
 class QuadNode
 {
@@ -11,11 +10,9 @@ public:
 
 	QuadNode()
 	{
-		// Link to previous element
-		first = nullptr;
-		// Link to next element
-		second = nullptr;
-		thrid = nullptr;
-		fourth = nullptr;
+		top = nullptr;
+		right = nullptr;
+		bottom = nullptr;
+		left = nullptr;
 	}
 };

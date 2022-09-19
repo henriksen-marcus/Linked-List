@@ -133,7 +133,6 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="QuadLinkedList.h" />
     <ClInclude Include="QuadNode.h" />
-    <ClInclude Include="Queue.h" />
     <ClInclude Include="DoubleLinkedList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

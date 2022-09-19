@@ -1,40 +1,31 @@
 #include <iostream>
 #include "DoubleLinkedList.h"
-#include "Queue.h"
 
 int main()
 {
     DLL<int> List;
 
-    List.Add(1);
-    List.Add(2);
-    List.Add(712);
-    List.Add(3);
-    List.Add(4);
+    /*List.add(1);
+    List.add(2);
+    List.add(712);
+    List.add(3);
+    List.add(4);*/
 
-    List.Print();
+    int myarr[3] = {6,4,2};
 
-    List.Remove(2);
+    List.add(myarr, 3);
+    List.print(DLL_Base::forward);
 
-    cout << endl << endl;
+    cout << List[0] << endl;
+    List[0] = 9;
+    List.print(DLL_Base::forward);
 
-    List.Print();
+   // List.print(DLL_Base::forward);
 
-#include "Node.h"
-    Node<int>* Hey = new Node<int>();
-    Hey->data = 1240;
-    List.Insert(Hey, 2);
-    cout << endl << endl;
-    List.Print();
+    //List.remove(2);
     
-  /*  Queue myQ;
 
-    myQ.add(1);
-    myQ.add(2);
-    myQ.add(72);
-    myQ.add(3);
-
-    myQ.Print();
-    myQ.RemoveFirst();
-    myQ.Print();*/
+    //List.print(DLL_Base::backwards);
+    
+    return 0;
 }
