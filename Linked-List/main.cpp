@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DoubleLinkedList.h"
+#include "Node.h"
 
 int main()
 {
@@ -16,9 +17,10 @@ int main()
     List.add(myarr, 3);
     List.print(DLL_Base::forward);
 
-    cout << List[0] << endl;
-    List[0] = 9;
+    List.swap(0,1);
+    cout << "space" << endl;
     List.print(DLL_Base::forward);
+    
 
    // List.print(DLL_Base::forward);
 
