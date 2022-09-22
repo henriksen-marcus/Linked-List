@@ -130,10 +130,16 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="QuadLinkedList.h" />
-    <ClInclude Include="QuadNode.h" />
-    <ClInclude Include="DoubleLinkedList.h" />
+    <ClInclude Include="declarations.h" />
+    <ClInclude Include="LinkedLists\DoubleLinkedList.h" />
+    <ClInclude Include="LinkedLists\Node.h" />
+    <ClInclude Include="LinkedLists\QuadLinkedList.h" />
+    <ClInclude Include="LinkedLists\QuadNode.h" />
+    <ClInclude Include="Sorts\bubblesort.h" />
+    <ClInclude Include="Sorts\insertionsort.h" />
+    <ClInclude Include="Sorts\mergesort.h" />
+    <ClInclude Include="Sorts\quicksort.h" />
+    <ClInclude Include="Sorts\selectionsort.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

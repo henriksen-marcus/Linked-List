@@ -1,33 +1,37 @@
-#include <iostream>
-#include "DoubleLinkedList.h"
-#include "Node.h"
+#include "declarations.h"
 
 int main()
 {
     DLL<int> List;
-
-    /*List.add(1);
-    List.add(2);
-    List.add(712);
+    
+    //----- Sample Code -----//
+    
+    /*List.add(4);
     List.add(3);
-    List.add(4);*/
+    List.add(712);
+    List.add(2);
+    List.add(1);*/
 
-    int myarr[3] = {6,4,2};
-
-    List.add(myarr, 3);
-    List.print(DLL_Base::forward);
-
-    List.swap(0,1);
-    cout << "space" << endl;
-    List.print(DLL_Base::forward);
+    /*int arr[6] = {6,4,2,7,9,1};
+    List.add(myarr, 6);*/
     
-
-   // List.print(DLL_Base::forward);
-
-    //List.remove(2);
+    /*List.print(DLL_Base::forward);
+    //bubblesort(List);
+    //selectionsort(List);
+    //insertionsort(List);
+    //mergesort(List);
+    quicksort(List);
+    List.print(DLL_Base::forward);*/
     
+    /*List.remove(2);
+    List.print(DLL_Base::backwards);*/
 
-    //List.print(DLL_Base::backwards);
+    /*List.insert(77777, 5);
+    List.print(DLL_Base::backwards);*/
+    
+    //----- End Sample Code -----//
+
+    
     
     return 0;
 }

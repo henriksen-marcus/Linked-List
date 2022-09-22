@@ -48,12 +48,12 @@ public:
 	int insert(T data, int index);
 	int insert(Node<T>* node, int index);
 
-	/** \brief Swaps the index of two elements. */
+	/** \brief Swaps the value of two elements. */
 	void swap(int a, int b);
 	
 	/**
 	 * \brief Prints the data of each element in the specified direction.
-	 * \param dir The direction print in (start at head or tail).
+	 * \param dir The direction to print in (start at head or tail).
 	 */
 	void print(direction dir);
 
@@ -242,7 +242,7 @@ void DLL<T>::print(const direction dir)
 {
 	Node<T>* CurrentNode;
 	int i{};
-
+	cout << "[ ";
 	switch (dir)
 	{
 	case forward:
@@ -250,7 +250,7 @@ void DLL<T>::print(const direction dir)
 		while (CurrentNode)
 		{
 			if (i++ >= size_) return;
-			cout << CurrentNode->data << endl;
+			cout << CurrentNode->data << " ";
 			CurrentNode = CurrentNode->next;
 		}
 		break;
@@ -259,9 +259,10 @@ void DLL<T>::print(const direction dir)
 		while (CurrentNode)
 		{
 			if (i++ >= size_) return;
-			cout << CurrentNode->data << endl;
+			cout << CurrentNode->data << " ";
 			CurrentNode = CurrentNode->prev;
 		}
 		break;
 	}
+	cout << "]" << endl;
 }
