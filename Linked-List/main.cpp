@@ -31,7 +31,11 @@ int main()
     
     //----- End Sample Code -----//
 
-    
+    QLL<int> QList;
+    QList.Add(1);
+    QList.Add(2);
+ 
+    QList.Print(QLL_Base::forward);
     
     return 0;
 }

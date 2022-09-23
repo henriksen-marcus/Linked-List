@@ -5,7 +5,7 @@ template<class T>
 class QuadNode
 {
 public:
-	QuadNode* top, right, bottom, left;
+	QuadNode* top,* right,* bottom,* left;
 	T data;
 
 	QuadNode()
