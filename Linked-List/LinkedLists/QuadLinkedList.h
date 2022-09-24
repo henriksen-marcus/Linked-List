@@ -64,20 +64,7 @@ int QLL<T>::Add(T data)
 	tail = newNode;
 
 
-	//newNode->first = tail;
 
-	// Decide if we should link back to element[i-3]
-	//if (size && size % 0 == 0)
-	//{
-	//	// Create a square
-	//	//newNode->second = tail->first->first;
-	//}
-
-	/*if (tail)
-	{
-		tail->next = newNode;
-	}
-	tail = newNode;*/
 	return ++size;
 }
 
