@@ -1,3 +1,5 @@
+#include <list>
+
 #include "declarations.h"
 
 int main()
@@ -6,11 +8,11 @@ int main()
     
     //----- Sample Code -----//
     
-    /*List.add(4);
+    List.add(4);
     List.add(3);
     List.add(712);
     List.add(2);
-    List.add(1);*/
+    List.add(1);
 
     /*int arr[6] = {6,4,2,7,9,1};
     List.add(myarr, 6);*/
@@ -31,11 +33,17 @@ int main()
     
     //----- End Sample Code -----//
 
-    QLL<int> QList;
+    /*QLL<int> QList;
     QList.Add(1);
     QList.Add(2);
  
-    QList.Print(QLL_Base::forward);
+    QList.Print(QLL_Base::forward);*/
+
+    List.insert(900,9);
+    List.print(DLL_Base::forward);
+
+    List.remove();
+    List.print(DLL_Base::forward);
     
     return 0;
 }

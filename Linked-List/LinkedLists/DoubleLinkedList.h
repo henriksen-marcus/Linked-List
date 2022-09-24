@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <vcruntime_startup.h>
+
 #include "Node.h"
 
 using namespace std;
@@ -21,13 +23,15 @@ public:
 	// Iteratively delete all elements in the linked list.
 	~DLL();
 
-	int size() const;
+	int size() { return size_; }
 
 	/**
 	 * \param i The index to return.
 	 * \return Pointer to the node at the index.
+	 * \remarks Pointer safety: If the given index exeeds the
+	 * list size, the tail will be returned.
 	 */
-	Node<T>* At(int &i);
+	Node<T>* at(const int &i);
 	
 	/**
 	 * \brief Adds the specified element to the end of the list.
@@ -40,13 +44,37 @@ public:
 	 * \param size The size of the incoming array.
 	 * \return The new list size.
 	 */
-	int add(T arr[], int size);
+	int add(T arr[], const int& size);
+
+	/**
+	 * \brief Adds the specified element to the start of the list.
+	 * \return The new list size.
+	 */
+	int addFront(T data) { return insert(data, 0); }
+
+	int addFront(T arr[], const int& size);
+	
 
 	/** \remarks If no argument is given the last element will be removed. */
-	int remove(int index = size() - 1);
+	int remove(const int& index = -1);
 
-	int insert(T data, int index);
-	int insert(Node<T>* node, int index);
+	/**
+	 * \brief Inserts a node with the given data into the specifed index.
+	 * Moves the node at the index one slot to the right.
+	 * \return The new list size.
+	 * \remarks Cannot perform the same action as add(). Will always
+	 * move the current element at the given index.
+	 */
+	int insert(T data, const int& index);
+
+	/**
+	* \brief Inserts the given node into the specifed index.
+	* Moves the node at the index one slot to the right.
+	* \return The new list size.
+	* \remarks Cannot perform the same action as add(). Will always
+	* move the current element at the given index.
+	*/
+	int insert(Node<T>* node, const int& index);
 
 	/** \brief Swaps the value of two elements. */
 	void swap(int a, int b);
@@ -96,26 +124,23 @@ DLL<T>::~DLL()
 
 	while (CurrentNode)
 	{
-		
+		CurrentNode = CurrentNode->next;
+		delete CurrentNode->prev;
 	}
+	delete CurrentNode;
 }
 
 template <class T>
-int DLL<T>::size() const
-{
-	return size_;
-}
-
-template <class T>
-Node<T>* DLL<T>::At(int &i)
+Node<T>* DLL<T>::at(const int &i)
 {
 	Node<T>* CurrentNode = head;
 	int j{};
 	
 	while (CurrentNode && j++ != i)
 		CurrentNode = CurrentNode->next;
-	
-	return CurrentNode;
+
+	if (CurrentNode) return CurrentNode;
+	return tail;
 }
 
 template<class T>
@@ -142,7 +167,7 @@ int DLL<T>::add(T data)
 }
 
 template <class T>
-int DLL<T>::add(T arr[], const int size)
+int DLL<T>::add(T arr[], const int &size)
 {
 	if (!arr || !size) return size_;
 	
@@ -157,9 +182,31 @@ int DLL<T>::add(T arr[], const int size)
 	return size_;
 }
 
-template<class T>
-int DLL<T>::remove(const int index)
+template <class T>
+int DLL<T>::addFront(T arr[], const int& size)
 {
+	// We iterate backwards to insert the array in the
+	// correct order
+	for (int i = size; i >= 0; i--)
+	{
+		insert(arr[i], 0);
+	}
+	return size_;
+}
+
+template<class T>
+int DLL<T>::remove(const int& index)
+{
+	if (index >= size_) return size_;
+	
+	// Delete last element if no argument is given
+	if (index == -1 || index == size_ - 1)
+	{
+		tail = tail->prev;
+		delete tail->next;
+		return --size_;
+	}
+	
 	Node<T>* CurrentNode = head;
 
 	// Iterate through list until we find the desired index
@@ -169,64 +216,59 @@ int DLL<T>::remove(const int index)
 	}
 
 	// Clean up pointers
-	CurrentNode->prev->next = CurrentNode->next;
+	if (CurrentNode->prev) CurrentNode->prev->next = CurrentNode->next;
 	CurrentNode->next->prev = CurrentNode->prev;
-
+	
 	delete CurrentNode;
 	return --size_;
 }
 
-/*template<class T>
-int DLL<T>::insert(T data, const int index)
-{
-	Node<T>* CurrentNode = head;
-
-	// Iterate through list until we find the desired index
-	for (int i{}; i < index; i++)
-	{
-		CurrentNode = CurrentNode->next;
-	}
-
-	// Since the user only has the data, we create a node to insert
-	auto* NewNode = new Node<T>();
-
-	// Clean up pointers
-	NewNode->data = data;
-	NewNode->prev = CurrentNode->prev;
-	NewNode->next = CurrentNode;
-	CurrentNode->prev = NewNode;
-	
-	return ++size_;
-}*/
-
 template<class T>
-int DLL<T>::insert(T data, const int index)
+int DLL<T>::insert(T data, const int &index)
 {
-	Node<T>* IndexNode = this->At(index);
+	Node<T>* IndexNode = this->at(index);
 	// Since the user only has the data, we create a node to insert
 	auto* NewNode = new Node<T>();
-
-	// Clean up pointers
+	
+	// Prep new node
 	NewNode->data = data;
-	NewNode->prev = IndexNode->prev;
 	NewNode->next = IndexNode;
-	IndexNode->prev->next = NewNode;
-	IndexNode->prev = NewNode;
+	
+	// Clean up pointers
+	// Incase the indexnode is the head, we check for nullptr on prev
+	if (IndexNode->prev)
+	{
+		NewNode->prev = IndexNode->prev;
+		IndexNode->prev->next = NewNode;
+		IndexNode->prev = NewNode;
+	} else
+	{
+		head = NewNode;
+	}
 	
 	return ++size_;
 }
 
 template<class T>
-int DLL<T>::insert(Node<T>* node, const int index)
+int DLL<T>::insert(Node<T>* node, const int& index)
 {
-	Node<T>* IndexNode = this->At(index);
+	Node<T>* IndexNode = this->at(index);
 
-	/* Since the user already has a node, we just work with
-	 * that off the bat. */
-	node->prev = IndexNode->prev;
+	// Since the user already has a node, we just work with
+	// that off the bat. 
 	node->next = IndexNode;
-	IndexNode->prev->next = node;
-	IndexNode->prev = node;
+
+	// Clean up pointers
+	// Incase the indexnode is the head, we check for nullptr on prev
+	if (IndexNode->prev)
+	{
+		node->prev = IndexNode->prev;
+		IndexNode->prev->next = node;
+		IndexNode->prev = node;
+	} else
+	{
+		head = node;
+	}
 	
 	return ++size_;
 }
