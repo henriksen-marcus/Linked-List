@@ -8,11 +8,11 @@ int main()
     
     //----- Sample Code -----//
     
-    List.add(4);
+    /*List.add(4);
     List.add(3);
     List.add(712);
     List.add(2);
-    List.add(1);
+    List.add(1);*/
 
     /*int arr[6] = {6,4,2,7,9,1};
     List.add(myarr, 6);*/
@@ -36,14 +36,15 @@ int main()
     /*QLL<int> QList;
     QList.Add(1);
     QList.Add(2);
- 
+    
     QList.Print(QLL_Base::forward);*/
 
-    List.insert(900,9);
-    List.print(DLL_Base::forward);
-
-    List.remove();
-    List.print(DLL_Base::forward);
+    for (int i{}; i < 10; i++)
+    {
+        List.fill(DLL_Base::rand, 0, 99, 50);
+        quicksort(List);
+        List.clear();
+    }
     
     return 0;
 }

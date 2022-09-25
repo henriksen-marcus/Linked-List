@@ -9,11 +9,15 @@ using namespace std;
 class DLL_Base
 {
 public:
-	enum direction { forward, backwards };
+	enum direction	{ forward, backwards };
+	enum filltype	{ rand, asc, desc };
 };
 
-/* Double linked list that works like an array.
- * Able to traverse back and fourth.
+
+/**
+ * \brief Double linked list that works like an array.
+ * \tparam T Datatype to store.
+ * \remarks Able to traverse back and fourth.
  */
 template<class T>
 class DLL : DLL_Base
@@ -53,13 +57,28 @@ public:
 	int addFront(T data) { return insert(data, 0); }
 
 	int addFront(T arr[], const int& size);
-	
 
+	/**
+	 * \brief Fills the list starting at the next available slot
+	 * with the specified number of elements.
+	 * \param type What fill pattern to use.
+	 * \param min The smallest possible number in the fill pattern.
+	 * \param max The largest possible number in the fill pattern.
+	 * \param amount The number of elements to add.
+	 * \return The new list size.
+	 * \remarks If no amount is given the entire range from
+	 * min-max will be printed.
+	 */
+	int fill(filltype type, int min, int max, int amount = -1);
+
+	/** \brief Empties the list. */
+	void clear();
+	
 	/**
 	 * \brief Deletes the element at given index and cleans up pointers.
 	 * \remarks If no argument is given the last element will be removed.
 	 */
-	int remove(const int& index = -1);
+	int remove(const int index = -1);
 
 	/**
 	 * \brief Deletes the last element in the list.
@@ -80,19 +99,19 @@ public:
 	 * \remarks Cannot perform the same action as add(). Will always
 	 * move the current element at the given index.
 	 */
-	int insert(T data, const int& index);
+	int insert(T data, const int index);
 
 	/**
 	* \brief Inserts the given node into the specified index.
 	* Moves the node at the index one slot to the right.
 	* \return The new list size.
 	* \remarks Cannot perform the same action as add(). Will always
-	* move the current element at the given index.
+	* move the element at the given index.
 	*/
-	int insert(Node<T>* node, const int& index);
+	int insert(Node<T>* node, const int index);
 
 	/** \brief Swaps the value of two elements. */
-	void swap(int& a, int& b);
+	void swap(int& a, int& b) { std::swap((*this)[a], (*this)[b]); }
 	
 	/**
 	 * \brief Prints the data of each element in the specified direction.
@@ -102,6 +121,8 @@ public:
 
 	Node<T>* head;
 	Node<T>* tail;
+	int operations;
+	int operations_saved = 0;
 
 private:
 	/**
@@ -112,51 +133,82 @@ private:
 	int index_;
 	Node<T>* cursor_;
 
-	int diff(int& a, int& b) { return abs(a - b); }
+	/** \return The positive difference between a and b. */
+	int diff(const int& a, const int& b) const { return abs(a - b); }
 
 public:
 	/** Allows for use of the standard [] array operator */
 	T& operator [] (const int &i)
 	{
-		if (i <)
+		if (!i) return head->data;
 		
 		Node<T>* CurrentNode = head;
-		cursor_ = head;
-		index_ = 0;
 		int j{};
-		
-		while (CurrentNode && j++ != i)
+
+		// Check if we can minimize operations by starting off
+		// closer to the desired index/node.
+		if (i > diff(index_, i))
 		{
-			CurrentNode = CurrentNode->next;
-			cursor_ = CurrentNode;
-			index_ = j;
+			CurrentNode = cursor_;
+			j = index_;
+			operations_saved += i - diff(index_, i);
 		}
-			
-		
+
+		if (i > j)
+		{
+			while (CurrentNode && j++ != i)
+			{
+				CurrentNode = CurrentNode->next;
+				cursor_ = CurrentNode;
+				index_ = j;
+				operations++;
+			}
+		}
+		else
+		{
+			while (CurrentNode && j-- != i)
+			{
+				CurrentNode = CurrentNode->prev;
+				cursor_ = CurrentNode;
+				index_ = j;
+				operations++;
+			}
+		}
 		return CurrentNode->data;
 	}
 };
 
+
 template<class T>
 DLL<T>::DLL()
 {
+	srand(time(0));
 	size_ = 0;
 	head = nullptr;
 	tail = head;
+	cursor_ = head;
+	index_ = 0;
+	operations = 0;
 }
+
 
 template<class T>
 DLL<T>::~DLL()
 {
-	Node<T>* CurrentNode = head;
-
-	while (CurrentNode)
+	printf("Deleting DLL. Operations performed: %d\nOperations saved: %d",
+		operations, operations_saved);
+	
+	if (!head) return;
+	
+	Node<T>* PrevNode = head;
+	while (head)
 	{
-		CurrentNode = CurrentNode->next;
-		delete CurrentNode->prev;
+		PrevNode = head;
+		head = head->next;
+		delete PrevNode;
 	}
-	delete CurrentNode;
 }
+
 
 template <class T>
 Node<T>* DLL<T>::at(const int &i)
@@ -171,11 +223,10 @@ Node<T>* DLL<T>::at(const int &i)
 	return tail;
 }
 
+
 template<class T>
 int DLL<T>::add(T data)
 {
-	if (!data) return size_;
-
 	auto* NewNode = new Node<T>;
 	NewNode->data = data;
 	NewNode->next = nullptr;
@@ -194,6 +245,7 @@ int DLL<T>::add(T data)
 	return ++size_;
 }
 
+
 template <class T>
 int DLL<T>::add(T arr[], const int &size)
 {
@@ -210,6 +262,7 @@ int DLL<T>::add(T arr[], const int &size)
 	return size_;
 }
 
+
 template <class T>
 int DLL<T>::addFront(T arr[], const int& size)
 {
@@ -222,8 +275,76 @@ int DLL<T>::addFront(T arr[], const int& size)
 	return size_;
 }
 
+
+template <class T>
+int DLL<T>::fill(filltype type, int min, int max, int amount)
+{
+	if (!amount) return size_;
+	if (amount == -1) amount = max - min + 1;
+
+	// Convert to float for decimal temp calculations.
+	const float diff = max - min;
+	
+	switch (type)
+	{
+	case rand:
+		for (int i{}; i < amount; i++)
+		{
+			add(std::rand() % max + min);
+		}
+		break;
+	case asc:
+		add(min);
+		if (amount > 1)
+		{
+			for (int i = 1; i < amount - 1; i++)
+			{
+				// Get proper spacing in case diff between min/max
+				// is greater than amount.
+				add(diff / (amount - 1) * i);
+			}
+			add(max);
+		}
+		break;
+	case desc:
+		add(max);
+		if (amount > 1)
+		{	// I have no idea how or why this works
+			for (int i = amount - 2; i > 0; i--)
+			{
+				// Get proper spacing incase diff between min/max
+				// is greater than amount.
+				add(diff / (amount - 1) * i);
+			}
+			add(min);
+		}
+		break;
+	}
+	return size_;
+}
+
+template <class T>
+void DLL<T>::clear()
+{
+	if (!head) return;
+	
+	Node<T>* PrevNode = head;
+	while (head)
+	{
+		PrevNode = head;
+		head = head->next;
+		delete PrevNode;
+	}
+	head = nullptr;
+	tail = head;
+	size_ = 0;
+	cursor_ = head;
+	index_ = 0;
+}
+
+
 template<class T>
-int DLL<T>::remove(const int& index)
+int DLL<T>::remove(const int index)
 {
 	if (index >= size_) return size_;
 	
@@ -246,13 +367,21 @@ int DLL<T>::remove(const int& index)
 	// Clean up pointers
 	if (CurrentNode->prev) CurrentNode->prev->next = CurrentNode->next;
 	CurrentNode->next->prev = CurrentNode->prev;
-	
 	delete CurrentNode;
+
+	// Make sure our cursor doesn't go out of scope
+	if (index_ >= size_)
+	{
+		index_ = size_ - 1;
+		cursor_ = tail;
+	}
+	
 	return --size_;
 }
 
+
 template<class T>
-int DLL<T>::insert(T data, const int &index)
+int DLL<T>::insert(T data, const int index)
 {
 	Node<T>* IndexNode = this->at(index);
 	// Since the user only has the data, we create a node to insert
@@ -277,8 +406,9 @@ int DLL<T>::insert(T data, const int &index)
 	return ++size_;
 }
 
+
 template<class T>
-int DLL<T>::insert(Node<T>* node, const int& index)
+int DLL<T>::insert(Node<T>* node, const int index)
 {
 	Node<T>* IndexNode = this->at(index);
 
@@ -301,11 +431,6 @@ int DLL<T>::insert(Node<T>* node, const int& index)
 	return ++size_;
 }
 
-template <class T>
-void DLL<T>::swap(int& a, int& b)
-{
-	std::swap((*this)[a], (*this)[b]);
-}
 
 template<class T>
 void DLL<T>::print(const direction dir)
