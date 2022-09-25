@@ -28,7 +28,7 @@ public:
 	/**
 	 * \param i The index to return.
 	 * \return Pointer to the node at the index.
-	 * \remarks Pointer safety: If the given index exeeds the
+	 * \remarks Pointer safety: If the given index exceeds the
 	 * list size, the tail will be returned.
 	 */
 	Node<T>* at(const int &i);
@@ -55,8 +55,23 @@ public:
 	int addFront(T arr[], const int& size);
 	
 
-	/** \remarks If no argument is given the last element will be removed. */
+	/**
+	 * \brief Deletes the element at given index and cleans up pointers.
+	 * \remarks If no argument is given the last element will be removed.
+	 */
 	int remove(const int& index = -1);
+
+	/**
+	 * \brief Deletes the last element in the list.
+	 * \return The new list size;
+	 */
+	int pop() { return remove(); }
+
+	/**
+	 * \brief Deletes the first element in the list.
+	 * \return The new list size.
+	 */
+	int popFront() { return remove(0); }
 
 	/**
 	 * \brief Inserts a node with the given data into the specifed index.
@@ -68,7 +83,7 @@ public:
 	int insert(T data, const int& index);
 
 	/**
-	* \brief Inserts the given node into the specifed index.
+	* \brief Inserts the given node into the specified index.
 	* Moves the node at the index one slot to the right.
 	* \return The new list size.
 	* \remarks Cannot perform the same action as add(). Will always
@@ -77,7 +92,7 @@ public:
 	int insert(Node<T>* node, const int& index);
 
 	/** \brief Swaps the value of two elements. */
-	void swap(int a, int b);
+	void swap(int& a, int& b);
 	
 	/**
 	 * \brief Prints the data of each element in the specified direction.
@@ -94,16 +109,29 @@ private:
 	 * \remarks We don't want users to be able to edit this directly
 	 */
 	int size_;
+	int index_;
+	Node<T>* cursor_;
+
+	int diff(int& a, int& b) { return abs(a - b); }
 
 public:
 	/** Allows for use of the standard [] array operator */
 	T& operator [] (const int &i)
 	{
+		if (i <)
+		
 		Node<T>* CurrentNode = head;
+		cursor_ = head;
+		index_ = 0;
 		int j{};
 		
 		while (CurrentNode && j++ != i)
+		{
 			CurrentNode = CurrentNode->next;
+			cursor_ = CurrentNode;
+			index_ = j;
+		}
+			
 		
 		return CurrentNode->data;
 	}
@@ -274,7 +302,7 @@ int DLL<T>::insert(Node<T>* node, const int& index)
 }
 
 template <class T>
-void DLL<T>::swap(int a, int b)
+void DLL<T>::swap(int& a, int& b)
 {
 	std::swap((*this)[a], (*this)[b]);
 }
