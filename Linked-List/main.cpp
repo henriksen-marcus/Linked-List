@@ -4,7 +4,7 @@
 
 int main()
 {
-    DLL<int> List;
+    //DLL<int> List;
     
     //----- Sample Code -----//
     
@@ -33,18 +33,27 @@ int main()
     
     //----- End Sample Code -----//
 
-    /*QLL<int> QList;
-    QList.Add(1);
-    QList.Add(2);
-    
-    QList.Print(QLL_Base::forward);*/
+    QLL<int> QList(1);
 
-    for (int i{}; i < 10; i++)
-    {
-        List.fill(DLL_Base::rand, 0, 99, 50);
-        quicksort(List);
-        List.clear();
-    }
+    QList.Add(2, QLL_Base::left);
+    QList.Add(3, QLL_Base::down);
+    QList.Add(4, QLL_Base::up);
+    //QList.Add(5, QLL_Base::down);
+    //QList.Add(6, QLL_Base::left);
+    //QList.Add(7, QLL_Base::left);
+    //QList.Add(8, QLL_Base::left);
+    //QList.Add(9, QLL_Base::up);
+    //QList.Add(10, QLL_Base::up);
+
+    
+    QList.Print();
+
+    //for (int i{}; i < 10; i++)
+    //{
+    //    List.fill(DLL_Base::rand, 0, 99, 50);
+    //    quicksort(List);
+    //    List.clear();
+    //}
     
     return 0;
 }

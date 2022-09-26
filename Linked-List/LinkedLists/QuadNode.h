@@ -5,14 +5,14 @@ template<class T>
 class QuadNode
 {
 public:
-	QuadNode* top,* right,* bottom,* left;
+	QuadNode<T>* ptr[4];
 	T data;
 
 	QuadNode()
 	{
-		top = nullptr;
-		right = nullptr;
-		bottom = nullptr;
-		left = nullptr;
+		for (int i{}; i < 4; i++)
+		{
+			ptr[i] = nullptr;
+		}
 	}
 };
