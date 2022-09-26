@@ -10,7 +10,7 @@ class DLL_Base
 {
 public:
 	enum direction	{ forward, backwards };
-	enum filltype	{ rand, asc, desc };
+	enum fillType	{ rand, asc, desc };
 };
 
 
@@ -24,7 +24,13 @@ class DLL : DLL_Base
 {
 public:
 	DLL();
-	// Iteratively delete all elements in the linked list.
+	/**
+	 * \brief Copy constructor.
+	 * \param obj The old list.
+	 * \remarks cursor_ and index_ will not be copied.
+	 */
+	DLL(const DLL<T>& obj);
+	/* Iteratively delete all elements in the linked list. */
 	~DLL();
 
 	int size() { return size_; }
@@ -69,7 +75,7 @@ public:
 	 * \remarks If no amount is given the entire range from
 	 * min-max will be printed.
 	 */
-	int fill(filltype type, int min, int max, int amount = -1);
+	int fill(fillType type, int min, int max, int amount = -1);
 
 	/** \brief Empties the list. */
 	void clear();
@@ -147,12 +153,12 @@ public:
 
 		// Check if we can minimize operations by starting off
 		// closer to the desired index/node.
-		if (i > diff(index_, i))
+		/*if (i > diff(index_, i))
 		{
 			CurrentNode = cursor_;
 			j = index_;
 			operations_saved += i - diff(index_, i);
-		}
+		}*/
 
 		if (i > j)
 		{
@@ -189,6 +195,33 @@ DLL<T>::DLL()
 	cursor_ = head;
 	index_ = 0;
 	operations = 0;
+}
+
+
+template <class T>
+DLL<T>::DLL(const DLL<T>& obj)
+{
+	Node<T>* CurrentNode = obj.head;
+
+	// Add head
+	auto* newNode = new Node<T>(CurrentNode->data);
+	head = newNode;
+	CurrentNode = CurrentNode->next;
+
+	if (obj.size() > 1)
+	{
+		// Add middle
+        	while (CurrentNode)
+        	{
+        		add(new Node<T>(CurrentNode->data));
+        		CurrentNode = CurrentNode->next; // Belongs to obj
+        	}
+        
+        	// Add tail
+        	newNode = new Node<T>(CurrentNode->data); // Belongs to us
+        	add(newNode);
+        	tail = newNode; // Belongs to us
+	}
 }
 
 
@@ -277,7 +310,7 @@ int DLL<T>::addFront(T arr[], const int& size)
 
 
 template <class T>
-int DLL<T>::fill(filltype type, int min, int max, int amount)
+int DLL<T>::fill(fillType type, int min, int max, int amount)
 {
 	if (!amount) return size_;
 	if (amount == -1) amount = max - min + 1;
@@ -312,7 +345,7 @@ int DLL<T>::fill(filltype type, int min, int max, int amount)
 		{	// I have no idea how or why this works
 			for (int i = amount - 2; i > 0; i--)
 			{
-				// Get proper spacing incase diff between min/max
+				// Get proper spacing in case diff between min/max
 				// is greater than amount.
 				add(diff / (amount - 1) * i);
 			}

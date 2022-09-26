@@ -19,5 +19,12 @@ public:
 		prev = nullptr;
 		data = NULL;
 	}
+
+	Node(T& data_)
+	{
+		next = nullptr;
+		prev = nullptr;
+		data = data_;
+	}
 };
 
