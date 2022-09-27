@@ -1,12 +1,15 @@
-#include <list>
-
 #include "declarations.h"
+
 
 int main()
 {
-    //DLL<int> List;
+    srand(time(0));
+    
+    task1Demo();
     
     //----- Sample Code -----//
+
+    //DLL<int> List;
     
     /*List.add(4);
     List.add(3);
@@ -32,28 +35,69 @@ int main()
     List.print(DLL_Base::backwards);*/
     
     //----- End Sample Code -----//
-
-    QLL<int> QList(1);
-
-    QList.Add(2, QLL_Base::left);
-    QList.Add(3, QLL_Base::down);
-    QList.Add(4, QLL_Base::up);
-    //QList.Add(5, QLL_Base::down);
-    //QList.Add(6, QLL_Base::left);
-    //QList.Add(7, QLL_Base::left);
-    //QList.Add(8, QLL_Base::left);
-    //QList.Add(9, QLL_Base::up);
-    //QList.Add(10, QLL_Base::up);
-
-    
-    QList.Print();
-
-    //for (int i{}; i < 10; i++)
-    //{
-    //    List.fill(DLL_Base::rand, 0, 99, 50);
-    //    quicksort(List);
-    //    List.clear();
-    //}
     
     return 0;
 }
+
+
+void task1Demo()
+{
+    QLL<int> QList(0);
+    QList.PrintEnvir();
+    Sleep(3000);
+    QList.Add(1, QLL_Base::right);
+    Sleep(3000);
+    QList.Move(QLL_Base::left);
+    Sleep(3000);
+    QList.Add(2, QLL_Base::up);
+    Sleep(3000);
+    QList.Move(QLL_Base::down);
+    Sleep(3000);
+    QList.Move(QLL_Base::right);
+    Sleep(3000);
+    QList.Add(3, QLL_Base::up);
+    Sleep(3000);
+    QList.Add(4, QLL_Base::up);
+    Sleep(3000);
+    QList.Add(5, QLL_Base::left);
+    Sleep(3000);
+    QList.Add(6, QLL_Base::left);
+     Sleep(3000);
+    QList.Add(7, QLL_Base::left);
+    Sleep(3000);
+    QList.Add(8, QLL_Base::left);
+    Sleep(3000);
+    
+    system("cls");
+    QList.PrintSorted();
+}
+
+
+void task2()
+{
+    const int arrSize = 15;
+    int arr[arrSize];
+
+    // Populate array with random numbers
+    for (int i{}; i < arrSize; i++) arr[i] = rand() % 10;
+
+    // Transfer data to a doubly linked list
+    DLL<int> List;
+    List.add(arr, arrSize);
+
+    // Insert new data in the middle
+    List.insert(999, List.size() >> 1);
+
+    List.print(DLL_Base::forward);
+
+    quicksort(List);
+
+    List.print(DLL_Base::forward);
+
+    List.clearDuplicates();
+
+    List.print(DLL_Base::forward);
+    List.print(DLL_Base::backwards);
+}
+
+

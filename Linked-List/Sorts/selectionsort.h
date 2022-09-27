@@ -15,7 +15,7 @@ void selectionsort(DLL<T>& list)
 	{
 		int smallestNumber = list[i];
 		int index{};
-		for (int k{ i + 1 }; k < list.size(); k++)
+		for (int k{ i + 1 }; k < list.size_(); k++)
 		{
 			if (list[k] < smallestNumber)
 			{

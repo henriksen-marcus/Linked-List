@@ -86,6 +86,9 @@ public:
 	 */
 	int remove(const int index = -1);
 
+	/** \brief Deletes the given element and cleans up pointers. */
+	int remove(Node<T>* node);
+
 	/**
 	 * \brief Deletes the last element in the list.
 	 * \return The new list size;
@@ -115,6 +118,8 @@ public:
 	* move the element at the given index.
 	*/
 	int insert(Node<T>* node, const int index);
+
+	int clearDuplicates();
 
 	/** \brief Swaps the value of two elements. */
 	void swap(int& a, int& b) { std::swap((*this)[a], (*this)[b]); }
@@ -153,12 +158,12 @@ public:
 
 		// Check if we can minimize operations by starting off
 		// closer to the desired index/node.
-		/*if (i > diff(index_, i))
+		if (i > diff(index_, i))
 		{
 			CurrentNode = cursor_;
 			j = index_;
 			operations_saved += i - diff(index_, i);
-		}*/
+		}
 
 		if (i > j)
 		{
@@ -403,7 +408,25 @@ int DLL<T>::remove(const int index)
 	delete CurrentNode;
 
 	// Make sure our cursor doesn't go out of scope
-	if (index_ >= size_)
+	if (index_ >= size_ - 1)
+	{
+		index_ = size_ - 1;
+		cursor_ = tail;
+	}
+	
+	return --size_;
+}
+
+template <class T>
+int DLL<T>::remove(Node<T>* node)
+{
+	// Clean up pointers
+	if (node->prev) node->prev->next = node->next;
+	if (node->next) node->next->prev = node->prev;
+	delete node;
+
+	// Make sure our cursor doesn't go out of scope
+	if (index_ >= size_ - 1)
 	{
 		index_ = size_ - 1;
 		cursor_ = tail;
@@ -462,6 +485,27 @@ int DLL<T>::insert(Node<T>* node, const int index)
 	}
 	
 	return ++size_;
+}
+
+
+template <class T>
+int DLL<T>::clearDuplicates()
+{
+	int beforesize = size_;
+	auto* CurrentNode = head;
+	while (CurrentNode->next)
+	{
+		if (CurrentNode->next->data == CurrentNode->data)
+		{
+			remove(CurrentNode->next);
+		}
+		else
+		{
+			CurrentNode = CurrentNode->next;
+		}
+	}
+	cout << "Removed " << beforesize - size_ << " dupes.\n";
+	return size_;
 }
 
 
