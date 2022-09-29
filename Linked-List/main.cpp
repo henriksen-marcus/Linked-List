@@ -6,16 +6,12 @@ int main()
     srand(time(0));
     
     task1Demo();
+    Sleep(5000);
+    task2();
     
     //----- Sample Code -----//
 
     //DLL<int> List;
-    
-    /*List.add(4);
-    List.add(3);
-    List.add(712);
-    List.add(2);
-    List.add(1);*/
 
     /*int arr[6] = {6,4,2,7,9,1};
     List.add(myarr, 6);*/
@@ -42,6 +38,7 @@ int main()
 
 void task1Demo()
 {
+    // See README.md on github for drawing/visualization. 
     QLL<int> QList(0);
     QList.PrintEnvir();
     Sleep(3000);
@@ -61,12 +58,6 @@ void task1Demo()
     Sleep(3000);
     QList.Add(5, QLL_Base::left);
     Sleep(3000);
-    QList.Add(6, QLL_Base::left);
-     Sleep(3000);
-    QList.Add(7, QLL_Base::left);
-    Sleep(3000);
-    QList.Add(8, QLL_Base::left);
-    Sleep(3000);
     
     system("cls");
     QList.PrintSorted();
@@ -75,7 +66,7 @@ void task1Demo()
 
 void task2()
 {
-    const int arrSize = 15;
+    const int arrSize = 40;
     int arr[arrSize];
 
     // Populate array with random numbers

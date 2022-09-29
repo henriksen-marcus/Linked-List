@@ -122,7 +122,7 @@ public:
 	int clearDuplicates();
 
 	/** \brief Swaps the value of two elements. */
-	void swap(int& a, int& b) { std::swap((*this)[a], (*this)[b]); }
+	void swap(int a, int b) { std::swap((*this)[a], (*this)[b]); }
 	
 	/**
 	 * \brief Prints the data of each element in the specified direction.
@@ -233,7 +233,7 @@ DLL<T>::DLL(const DLL<T>& obj)
 template<class T>
 DLL<T>::~DLL()
 {
-	printf("Deleting DLL. Operations performed: %d\nOperations saved: %d",
+	printf("Deleting DLL. Operations performed: %d\nOperations saved: %d\n",
 		operations, operations_saved);
 	
 	if (!head) return;

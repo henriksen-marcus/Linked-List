@@ -35,8 +35,12 @@ public:
 	 */
 	int Add(T data, QLL_Base::direction dir, bool overwrite = false);
 
-	/** \brief Deletes the element at the cursor. */
-	int Remove() { cursor->data = NULL; return size_; }
+	/**
+	 * \brief Deletes the element at the cursor.
+	 * \remarks We cannot always straight up delete the node,
+	 * as a quad linked list needs the node's pointers to traverse.
+	 */
+	int Remove() { cursor->data = 0; return size_; }
 
 	/** \brief Prints the intire linked list in no particular order. */
 	void Print();
@@ -355,8 +359,7 @@ void QLL<T>::PrintEnvir()
 	int PrintData = cursor->ptr[up] ? cursor->ptr[up]->data : -1;
 	printf("%s    %d\n", PrintData == -1 ? " " : "  ", PrintData);
 	printf("      ^\n");
-	PrintData = cursor->data ? cursor->data : -1;
-	printf("%d <- %d -> %d\n", cursor->ptr[left] ? cursor->ptr[left]->data : -1, PrintData,  cursor->ptr[right] ? cursor->ptr[right]->data : -1);
+	printf("%d <- %d -> %d\n", cursor->ptr[left] ? cursor->ptr[left]->data : -1, cursor->data,  cursor->ptr[right] ? cursor->ptr[right]->data : -1);
 	printf("      v\n");
 	PrintData = cursor->ptr[down] ? cursor->ptr[down]->data : -1;
 	printf("%s    %d\n", PrintData == -1 ? " " : "  ", PrintData);
